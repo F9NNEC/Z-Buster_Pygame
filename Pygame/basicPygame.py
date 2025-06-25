@@ -1,4 +1,5 @@
 import pygame
+import random
 
 # initialize the pygame
 pygame.init()
@@ -20,6 +21,14 @@ playerX_change = 0
 def player(x, y):
     screen.blit(adit, (x, y))
 
+# enemy
+alien = pygame.image.load('alien.png')
+enemyX = random.randint(10,790)
+enemyY = 100
+enemyX_change = 0
+
+def enemy(x, y):
+    screen.blit(alien, (x, y))
 
 # game loop
 running = True
@@ -56,5 +65,7 @@ while running:
 
     # make player appear to window
     player(playerX, playerY)
+
+    enemy(enemyX, enemyY)
 
     pygame.display.update()
