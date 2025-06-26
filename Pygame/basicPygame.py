@@ -31,7 +31,7 @@ enemyX = []
 enemyY = []
 enemyX_change = []
 enemyY_change = []
-numOfEnemies = 5 
+numOfEnemies = 5
 
 for i in range(numOfEnemies):
     alien.append(pygame.image.load('alien.png')) # append - store to []
@@ -133,8 +133,8 @@ while running:
             enemyX[i] = random.randint(10,735)
             enemyY[i] = random.randint(50,150)
 
-            # make enemy appear to window
-            enemy(enemyX[i], enemyY[i], i)
+        # make enemy appear to window
+        enemy(enemyX[i], enemyY[i], i)
 
         # make player appear to window
         player(playerX, playerY)
