@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+from pygame import mixer
 
 # initialize the pygame
 pygame.init()
@@ -47,13 +48,13 @@ def enemy(x, y, i):
 bulletImg = pygame.image.load('bullet.png')
 bulletX = 0
 bulletY = 480
-bulletY_change = 10
+bulletY_change = 20
 bullet_state = 'ready'
 
 def fire_bullet(x, y): # set bullet state and possition
     global bullet_state
     bullet_state = 'fire'
-    screen.blit(bulletImg, (x + 16, y - 10))
+    screen.blit(bulletImg, (x + 16, y - 20))
 
 # collision and calculate distance between enemy and bullet
 def isCollision(enemyX, enemyY, bulletX, bulletY):
@@ -64,7 +65,21 @@ def isCollision(enemyX, enemyY, bulletX, bulletY):
         return False
 
 # score
-score = 0
+score_value = 0
+scoreFont = pygame.font.Font('freesansbold.ttf', 16)
+scoreX = 10
+scoreY = 10
+
+def showScore(x, y):
+    score = scoreFont.render('score : ' + str(score_value), True, (255, 255, 255))
+    screen.blit(score, (x, y))
+
+# background sound
+mixer.music.load('backgroundMusic.wav')
+mixer.music.play(-1) #-1 for play loop
+
+
+
 
 # game loop
 running = True
@@ -85,6 +100,8 @@ while running:
             if bullet_state is 'ready': #only shoot when bullet is ready
                 bulletX = playerX
                 fire_bullet(bulletX, playerY)
+                bulletSound = mixer.Sound('laser.wav')
+                bulletSound.play()
 
     # if keystroke is pressed check wheter its right or left
         if event.type == pygame.KEYDOWN:
@@ -126,8 +143,10 @@ while running:
         if collision:
             bulletY = 480
             bullet_state = 'ready'
-            score += 1
-            print(score)
+            score_value += 1
+            hitSound = mixer.Sound('explosion.wav')
+            hitSound.play()
+            
 
             # respawn enemy on random poss
             enemyX[i] = random.randint(10,735)
@@ -147,10 +166,9 @@ while running:
         bullet_state = 'ready'
 
     # bullet movement
-    if bullet_state is 'fire':
+    if bullet_state == 'fire':
         fire_bullet(bulletX, bulletY)
         bulletY -= bulletY_change
 
-
-
+    showScore(scoreX, scoreY)
     pygame.display.update()
